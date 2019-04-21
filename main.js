@@ -8,13 +8,80 @@ var renderer = new THREE.WebGLRenderer({
 renderer.setSize(width, height);
 document.body.appendChild(renderer.domElement);
 
+
+
+var controls;
+
+var blocker = document.getElementById( 'blocker' );
+var instructions = document.getElementById( 'instructions' );
+
+var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+
+
+if ( havePointerLock ) {
+  var element = document.body;
+  var pointerlockchange = function ( event ) {
+    if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
+      controlsEnabled = true;
+      controls.enabled = true;
+      blocker.style.display = 'none';
+    } else {
+      controls.enabled = false;
+      blocker.style.display = '-webkit-box';
+      blocker.style.display = '-moz-box';
+      blocker.style.display = 'box';
+      instructions.style.display = '';
+    }
+  };
+  var pointerlockerror = function ( event ) {
+    instructions.style.display = '';
+  };
+  // Hook pointer lock state change events
+  document.addEventListener( 'pointerlockchange', pointerlockchange, false );
+  document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
+  document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
+  document.addEventListener( 'pointerlockerror', pointerlockerror, false );
+  document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
+  document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
+  instructions.addEventListener( 'click', function ( event ) {
+    instructions.style.display = 'none';
+    // Ask the browser to lock the pointer
+    element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+    if ( /Firefox/i.test( navigator.userAgent ) ) {
+      var fullscreenchange = function ( event ) {
+        if ( document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element ) {
+          document.removeEventListener( 'fullscreenchange', fullscreenchange );
+          document.removeEventListener( 'mozfullscreenchange', fullscreenchange );
+          element.requestPointerLock();
+        }
+      };
+      document.addEventListener( 'fullscreenchange', fullscreenchange, false );
+      document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
+      element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+      element.requestFullscreen();
+    } else {
+      element.requestPointerLock();
+    }
+  }, false );
+} else {
+  instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
+}
+
+var controlsEnabled = false;
+var moveForward = false;
+var moveBackward = false;
+var moveLeft = false;
+var moveRight = false;
+var canJump = false;
+var prevTime = performance.now();
+var velocity = new THREE.Vector3();
 //Camera vectors
 
-var camMove = new THREE.Vector3(0, 0, 0),
-  camStrafe = new THREE.Vector3(0, 0, 0);
-var cameraLookAt = new THREE.Vector3(0, 0, -1);
-var cameraRight = new THREE.Vector3(1, 0, 0);
-var cameraUp = new THREE.Vector3().crossVectors(cameraRight, cameraLookAt);
+// var camMove = new THREE.Vector3(0, 0, 0),
+//   camStrafe = new THREE.Vector3(0, 0, 0);
+// var cameraLookAt = new THREE.Vector3(0, 0, -1);
+// var cameraRight = new THREE.Vector3(1, 0, 0);
+// var cameraUp = new THREE.Vector3().crossVectors(cameraRight, cameraLookAt);
 var bounceNum = 0;
 var isMoving = false;
 var moveOk = false;
@@ -25,132 +92,132 @@ var clickPos = {
   y: 0
 };
 //add controls
-document.addEventListener("mousemove", look, false);
-document.addEventListener("click", click, false);
-document.addEventListener("keydown", doKeyDown, false);
-document.addEventListener("keyup", doKeyUp, false);
+// document.addEventListener("mousemove", look, false);
+// document.addEventListener("click", click, false);
+// document.addEventListener("keydown", doKeyDown, false);
+// document.addEventListener("keyup", doKeyUp, false);
 
 //Mouse variables
-var firstMouseMove = true;
-var oldMousePos = {
-  x: 0,
-  y: 0
-};
+// var firstMouseMove = true;
+// var oldMousePos = {
+//   x: 0,
+//   y: 0
+// };
 
-function click(evt) {
+// function click(evt) {
 
-  var ray = new THREE.Raycaster(camera.position, cameraLookAt);
-  if (buttons.length > 0) {
-    for (var buttonIndex = 0; buttonIndex < buttons.length; buttonIndex++) {
-      var collisionResults = ray.intersectObject(buttons[buttonIndex]);
-      console.log(collisionResults);
-      if (collisionResults.length > 0) {
-        scene.remove(scene.getObjectByName(buttons[buttonIndex].name));
-        buttons.splice(buttonIndex, 1);
-      }
-    }
-  } else {
-    var collisionResults = ray.intersectObjects(door);
-    if (collisionResults.length > 0) {
-      scene.remove(scene.getObjectByName(door[0].name));
-      gameOver = true;
-      door.splice(0, 1);
-    }
+//   var ray = new THREE.Raycaster(camera.position, cameraLookAt);
+//   if (buttons.length > 0) {
+//     for (var buttonIndex = 0; buttonIndex < buttons.length; buttonIndex++) {
+//       var collisionResults = ray.intersectObject(buttons[buttonIndex]);
+//       console.log(collisionResults);
+//       if (collisionResults.length > 0) {
+//         scene.remove(scene.getObjectByName(buttons[buttonIndex].name));
+//         buttons.splice(buttonIndex, 1);
+//       }
+//     }
+//   } else {
+//     var collisionResults = ray.intersectObjects(door);
+//     if (collisionResults.length > 0) {
+//       scene.remove(scene.getObjectByName(door[0].name));
+//       gameOver = true;
+//       door.splice(0, 1);
+//     }
 
-  }
-}
+//   }
+// }
 
 
 //looking around
-function look(evt) {
-  if (firstMouseMove) {
-    oldMousePos.x = evt.clientX;
-    oldMousePos.y = evt.clientY;
-    firstMouseMove = false;
-    return;
-  }
-  var yaw = (oldMousePos.x - event.clientX) / 200.00;
-  var pitch = (oldMousePos.y - event.clientY) / 400.00;
-  cameraLookAt.applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
-  cameraRight.applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
-  cameraLookAt.applyAxisAngle(cameraRight, pitch);
-  oldMousePos.x = event.clientX;
-  oldMousePos.y = event.clientY;
+// function look(evt) {
+//   if (firstMouseMove) {
+//     oldMousePos.x = evt.clientX;
+//     oldMousePos.y = evt.clientY;
+//     firstMouseMove = false;
+//     return;
+//   }
+//   var yaw = (oldMousePos.x - event.clientX) / 200.00;
+//   var pitch = (oldMousePos.y - event.clientY) / 400.00;
+//   cameraLookAt.applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
+//   cameraRight.applyAxisAngle(new THREE.Vector3(0, 1, 0), yaw);
+//   cameraLookAt.applyAxisAngle(cameraRight, pitch);
+//   oldMousePos.x = event.clientX;
+//   oldMousePos.y = event.clientY;
 
-}
+// }
 
 //stop moving
-function doKeyUp(evt) {
-  var code = evt.keyCode; // Numerical code for key that was pressed.
-  switch (code) {
-    case 65: // left arrow key
-      camStrafe.x = 0;
-      camStrafe.y = 0;
-      camStrafe.z = 0;
-      isMoving = false;
-      break;
-    case 68: // right arrow key
-      camStrafe.x = 0;
-      camStrafe.y = 0;
-      camStrafe.z = 0;
-      isMoving = false;
-      break;
-    case 87: // up arrow key
-      camMove.x = 0;
-      camMove.y = 0;
-      camMove.z = 0;
-      isMoving = false;
-      break;
-    case 83: // down arrow key
-      camMove.x = 0;
-      camMove.y = 0;
-      camMove.z = 0;
-      isMoving = false;
-      break;
-  }
-}
+// function doKeyUp(evt) {
+//   var code = evt.keyCode; // Numerical code for key that was pressed.
+//   switch (code) {
+//     case 65: // left arrow key
+//       camStrafe.x = 0;
+//       camStrafe.y = 0;
+//       camStrafe.z = 0;
+//       isMoving = false;
+//       break;
+//     case 68: // right arrow key
+//       camStrafe.x = 0;
+//       camStrafe.y = 0;
+//       camStrafe.z = 0;
+//       isMoving = false;
+//       break;
+//     case 87: // up arrow key
+//       camMove.x = 0;
+//       camMove.y = 0;
+//       camMove.z = 0;
+//       isMoving = false;
+//       break;
+//     case 83: // down arrow key
+//       camMove.x = 0;
+//       camMove.y = 0;
+//       camMove.z = 0;
+//       isMoving = false;
+//       break;
+//   }
+// }
 
-//start moving
-function doKeyDown(evt) {
+// //start moving
+// function doKeyDown(evt) {
 
-  var code = evt.keyCode; // Numerical code for key that was pressed.
-  switch (code) {
-    case 65: // left arrow key
+//   var code = evt.keyCode; // Numerical code for key that was pressed.
+//   switch (code) {
+//     case 65: // left arrow key
 
-      camStrafe.x = -cameraRight.x / 2.0;
-      camStrafe.y = -cameraRight.y / 2.0;
-      camStrafe.z = -cameraRight.z / 2.0;
-      isMoving = true;
-      moveDir = 90;
+//       camStrafe.x = -cameraRight.x / 2.0;
+//       camStrafe.y = -cameraRight.y / 2.0;
+//       camStrafe.z = -cameraRight.z / 2.0;
+//       isMoving = true;
+//       moveDir = 90;
 
-      break;
-    case 68: // right arrow key
+//       break;
+//     case 68: // right arrow key
 
-      camStrafe.x = cameraRight.x / 2.0;
-      camStrafe.y = cameraRight.y / 2.0;
-      camStrafe.z = cameraRight.z / 2.0;
-      isMoving = true;
-      moveDir = 270;
-      break;
-    case 87: // up arrow key
-      camMove.x = cameraLookAt.x / 2.0;
-      camMove.y = cameraLookAt.y / 2.0;
-      camMove.z = cameraLookAt.z / 2.0;
-      isMoving = true;
-      moveDir = 0;
-      break;
-    case 83: // down arrow key
+//       camStrafe.x = cameraRight.x / 2.0;
+//       camStrafe.y = cameraRight.y / 2.0;
+//       camStrafe.z = cameraRight.z / 2.0;
+//       isMoving = true;
+//       moveDir = 270;
+//       break;
+//     case 87: // up arrow key
+//       camMove.x = cameraLookAt.x / 2.0;
+//       camMove.y = cameraLookAt.y / 2.0;
+//       camMove.z = cameraLookAt.z / 2.0;
+//       isMoving = true;
+//       moveDir = 0;
+//       break;
+//     case 83: // down arrow key
 
-      camMove.x = -cameraLookAt.x / 2.0;
-      camMove.y = -cameraLookAt.y / 2.0;
-      camMove.z = -cameraLookAt.z / 2.0;
-      isMoving = true;
-      moveDir = 180;
-      break;
-    default:
-      break;
-  }
-}
+//       camMove.x = -cameraLookAt.x / 2.0;
+//       camMove.y = -cameraLookAt.y / 2.0;
+//       camMove.z = -cameraLookAt.z / 2.0;
+//       isMoving = true;
+//       moveDir = 180;
+//       break;
+//     default:
+//       break;
+//   }
+// }
 var collide = [];
 var scene = new THREE.Scene;
 
@@ -265,11 +332,61 @@ scene.add(cube);
 */
 // create perspective camera
 var camera = new THREE.PerspectiveCamera(100, width / height, 0.1, 10000);
+controls = new THREE.PointerLockControls( camera );
+scene.add( controls.getObject() );
+
+var onKeyDown = function ( event ) {
+  switch ( event.keyCode ) {
+    case 38: // up
+    case 87: // w
+      moveForward = true;
+      break;
+    case 37: // left
+    case 65: // a
+      moveLeft = true; break;
+    case 40: // down
+    case 83: // s
+      moveBackward = true;
+      break;
+    case 39: // right
+    case 68: // d
+      moveRight = true;
+      break;
+    case 32: // space
+      if ( canJump === true ) velocity.y += 350;
+      canJump = false;
+      break;
+  }
+};
+var onKeyUp = function ( event ) {
+  switch( event.keyCode ) {
+    case 38: // up
+    case 87: // w
+      moveForward = false;
+      break;
+    case 37: // left
+    case 65: // a
+      moveLeft = false;
+      break;
+    case 40: // down
+    case 83: // s
+      moveBackward = false;
+      break;
+    case 39: // right
+    case 68: // d
+      moveRight = false;
+      break;
+  }
+};
+document.addEventListener( 'keydown', onKeyDown, false );
+document.addEventListener( 'keyup', onKeyUp, false );
+
+
 camera.position.y = 50;
 camera.position.z = 20;
 camera.position.x = 20;
-camera.lookAt(cube);
-scene.add(camera);
+// camera.lookAt(cube);
+// scene.add(camera);
 
 
 
@@ -286,8 +403,8 @@ renderer.render(scene, camera);
 
 
 // create the view matrix
-camera.up = new THREE.Vector3(0, 1, 0)
-camera.lookAt(0, 0, 0);
+// camera.up = new THREE.Vector3(0, 1, 0)
+// camera.lookAt(0, 0, 0);
 
 
 //Add floor
@@ -311,43 +428,61 @@ var cubeCenter = new THREE.Vector3(0, 0, 0);
 
 function render() {
   if (!gameOver) {
-    var newLookAt = new THREE.Vector3().addVectors(camera.position, cameraLookAt);
-    camera.lookAt(newLookAt);
-    var moveOk = true;
-    var next = camMove.clone();
-    next.add(camStrafe.clone());
-    var camPos = camera.position.clone();
-    next.multiplyScalar(.01);
-    var direction = cameraLookAt.clone();
+    // var newLookAt = new THREE.Vector3().addVectors(camera.position, cameraLookAt);
+    // camera.lookAt(newLookAt);
+    // var moveOk = true;
+    // var next = camMove.clone();
+    // next.add(camStrafe.clone());
+    // var camPos = camera.position.clone();
+    // next.multiplyScalar(.01);
+    // var direction = cameraLookAt.clone();
 
-    direction.applyAxisAngle(new THREE.Vector3(0, 1, 0), ((moveDir * Math.PI) / 180));
+    // direction.applyAxisAngle(new THREE.Vector3(0, 1, 0), ((moveDir * Math.PI) / 180));
 
-    var ray = new THREE.Raycaster(camPos.add(next), direction);
-    var collisionResults = ray.intersectObjects(collide);
-    if (collisionResults.length > 0) {
-      if (collisionResults[0].distance < 5) {
-        moveOk = false;
-      }
-    }
-    if (moveOk) {
+    // var ray = new THREE.Raycaster(camPos.add(next), direction);
+    // var collisionResults = ray.intersectObjects(collide);
+    // if (collisionResults.length > 0) {
+    //   if (collisionResults[0].distance < 5) {
+    //     moveOk = false;
+    //   }
+    // }
+    // if (moveOk) {
 
-      camera.position.add(camMove);
-      camera.position.add(camStrafe);
+    //   camera.position.add(camMove);
+    //   camera.position.add(camStrafe);
 
-    }
+    // }
     /*
     if (isMoving || camera.position.y > 4.5 || camera.position.y < 4) {
       bounceNum += 2;
       camera.position.y = (Math.cos((bounceNum * 5) * Math.PI / 180)) + 4;
     }*/
 
+    var time = performance.now();
+    var delta = ( time - prevTime ) / 1000;
+    velocity.x -= velocity.x * 10.0 * delta;
+    velocity.z -= velocity.z * 10.0 * delta;
+    velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+    if ( moveForward ) velocity.z -= 400.0 * delta;
+    if ( moveBackward ) velocity.z += 400.0 * delta;
+    if ( moveLeft ) velocity.x -= 400.0 * delta;
+    if ( moveRight ) velocity.x += 400.0 * delta;
+    controls.getObject().translateX( velocity.x * delta );
+    controls.getObject().translateY( velocity.y * delta );
+    controls.getObject().translateZ( velocity.z * delta );
+    if ( controls.getObject().position.y < 10 ) {
+      velocity.y = 0;
+      controls.getObject().position.y = 10;
+      canJump = true;
+    }
+    prevTime = time;
 
     renderer.render(scene, camera);
     requestAnimationFrame(render);
   } else {
     var text2 = document.createElement('div');
     text2.style.position = 'absolute';
-    //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+    // text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
     text2.style.background = "#FFFFFF";
     text2.style.width = 100;
     text2.style.height = 100;
