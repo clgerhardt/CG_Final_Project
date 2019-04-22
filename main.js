@@ -339,10 +339,29 @@ scene.add(cube);
 var camera = new THREE.PerspectiveCamera(100, width / height, 0.1, 10000);
 controls = new THREE.PointerLockControls( camera );
 scene.add( controls.getObject() );
+// scene.add(camera);
 
 var point_on_screen = new THREE.Mesh(new THREE.BoxGeometry(.1, .1, .1), new THREE.MeshBasicMaterial({color: 0x5555ff }));
 point_on_screen.position.set(0,0,-20);
 camera.add(point_on_screen);
+
+var where_bullet_come_from_weapon = new THREE.Object3D();
+where_bullet_come_from_weapon.position.set(2, -1, -5);
+camera.add(where_bullet_come_from_weapon);
+
+var bullets = [];
+function onMouseDown() {
+  console.log(controls.getDirection(new THREE.Vector3(0, 0, 0)))
+    let sphere_ball = new THREE.SphereGeometry(10, 8, 4);
+    let basic_mesh = new THREE.MeshBasicMaterial({color: "blue"});
+    let bullet = new THREE.Mesh(sphere_ball, basic_mesh);
+    bullet.position.copy(where_bullet_come_from_weapon.getWorldPosition()); // start position - the tip of the weapon
+    // console.log(controls.quaternion)
+    bullet.quaternion.copy(controls.getDirection(new THREE.Vector3(0, 0, 0))); // apply camera's quaternion
+    console.log(bullet.quaternion)
+    scene.add(bullet);
+    bullets.push(bullet);
+}
 
 raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
 
@@ -391,11 +410,11 @@ var onKeyUp = function ( event ) {
 };
 document.addEventListener( 'keydown', onKeyDown, false );
 document.addEventListener( 'keyup', onKeyUp, false );
+window.addEventListener("mousedown", onMouseDown);
 
-
-camera.position.y = 0;
+// camera.position.y = 0;
 // camera.position.z = 20;
-camera.position.x = 20;
+// camera.position.x = 20;
 // camera.lookAt(cube);
 // scene.add(camera);
 
@@ -448,7 +467,9 @@ groundMat = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
 ground = new THREE.Mesh( groundGeo, groundMat );
 scene.add( ground );
 
-
+var axesHelper = new THREE.AxesHelper( 1000 );
+axesHelper.position.y = 40;
+scene.add( axesHelper );
 //Shadows
 renderer.shadowMap.enabled = true;
 renderer.setClearColor( 0xffffff );
@@ -458,9 +479,12 @@ renderer.render(scene, camera);
 // var cubeCenter = new THREE.Vector3(0, 0, 0);
 
 
-
+var speed = 1000;
+var clock = new THREE.Clock();
+var bullet_delta = 0;
 function render() {
   if (!gameOver) {
+    
     if ( controlsEnabled ) {
       raycaster.ray.origin.copy( controls.getObject().position );
       raycaster.ray.origin.y -= 10;
@@ -488,6 +512,11 @@ function render() {
         canJump = true;
       }
       prevTime = time;
+      bullet_delta = clock.getDelta();
+      bullets.forEach(b =>{ 
+        // console.log(b.geometry.vertices[1]);
+        b.translateZ(-speed * delta); // move along the local z-axis
+      });
   }
 
     // var newLookAt = new THREE.Vector3().addVectors(camera.position, cameraLookAt);
