@@ -387,12 +387,12 @@ var PointerLockControls = function ( camera, cannonBody ) {
                 point_on_screen = new THREE.Mesh(new THREE.BoxGeometry(.1, .1, .1), new THREE.MeshBasicMaterial({color: 0x5555ff }));
                 point_on_screen.position.set(0,0,-20);
                 camera.add(point_on_screen);
-              
+
                 where_bullet_come_from_weapon = new THREE.Object3D();
                 where_bullet_come_from_weapon.position.set(2, -1, -5);
                 camera.add(where_bullet_come_from_weapon);
               }
-              
+
               function addLightToCamera(){
                 //create player light
                 flashlight = new THREE.AmbientLight(0x6d6dFF, 2, 100, 1);
@@ -426,8 +426,8 @@ var PointerLockControls = function ( camera, cannonBody ) {
                 maze.push([0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0]);
                 maze.push([0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0]);
                 maze.push([0, 0, 0, 1, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]);
-                
-                
+
+
                 //Create maze
                 var halfExtents = new CANNON.Vec3(1,1,1);
                 var boxShape = new CANNON.Box(halfExtents);
@@ -440,13 +440,31 @@ var PointerLockControls = function ( camera, cannonBody ) {
                       });
                       var boxBody = new CANNON.Body({ mass: 5 });
                       boxBody.addShape(boxShape);
-                      world.add(boxBody);
+
                       var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
                       cube.castShadow = true;
                       cube.recieveShadow = true;
                       cube.needsUpdate = true;
                       cube.position.set(j * 10, 5, i * 10);
+                      boxBody.position.set(j * 10, 5, i * 10);
+                      world.add(boxBody);
+                      collide.push(cube);
+                      objects.push(cube);
+                      scene.add(cube);
+                    }
+                    if (maze[i][j] == 0){
+                      var cubeGeometry = new THREE.CubeGeometry(10, 10, 10);
+                      var cubeMaterial = new THREE.MeshLambertMaterial({
+                        color: 0xF0F0F0
+                      });
+                      var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+                      boxBody.addShape(boxShape);
+                      world.add(boxBody);
+                      cube.castShadow = true;
+                      cube.recieveShadow = true;
+                      cube.needsUpdate = true;
                       boxBody.position.set(j * 10, 5, i * 10)
+                      cube.position.set(j * 10, 15, i * 10);
                       collide.push(cube);
                       objects.push(cube);
                       scene.add(cube);
@@ -466,6 +484,13 @@ var PointerLockControls = function ( camera, cannonBody ) {
                       boxBody.addShape(boxShape);
                       world.add(boxBody);
                       var cube2 = new THREE.Mesh(cubeGeometry2, cubeMaterial2);
+                      var cubeGeometry3 = new THREE.CubeGeometry(10, 10, 10);
+                      var cubeMaterial3 = new THREE.MeshLambertMaterial({
+                        color: 0xF0F0F0
+                      });
+                      var cube3 = new THREE.Mesh(cubeGeometry3, cubeMaterial3);
+                      cube3.position.set(j * 10, 15, i * 10)
+                      cube.position.set(j * 10, 15, i * 10);
                       cube2.add(new THREE.PointLight(0x00FF00, 1, 10, .1));
                       cube.castShadow = true;
                       cube.recieveShadow = true;
@@ -474,6 +499,9 @@ var PointerLockControls = function ( camera, cannonBody ) {
                       cube2.position.set(j * 10, 1.5, i * 10);
                       cube.position.set(j * 10, 2.5, i * 10);
                       cube.name = "button" + i + j;
+                      collide.push(cube3);
+                      objects.push(cube3);
+                      scene.add(cube3);
                       buttons.push(cube);
                       collide.push(cube);
                       collide.push(cube2);
@@ -498,11 +526,11 @@ var PointerLockControls = function ( camera, cannonBody ) {
                       door.push(cube);
                       collide.push(cube);
                       objects.push(cube);
-                
+
                       scene.add(cube);
-                
+
                     }
-                
+
                   }
                 }
               }
@@ -589,4 +617,3 @@ var PointerLockControls = function ( camera, cannonBody ) {
                     ballMesh.position.set(x,y,z);
                 }
             });
-
