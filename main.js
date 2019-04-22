@@ -11,7 +11,8 @@ document.body.appendChild(renderer.domElement);
 
 
 var controls;
-
+var objects = [];
+var raycaster;
 var blocker = document.getElementById( 'blocker' );
 var instructions = document.getElementById( 'instructions' );
 
@@ -268,6 +269,7 @@ for (var i = 0; i < maze.length; i++) {
       cube.needsUpdate = true;
       cube.position.set(j * 10, 5, i * 10);
       collide.push(cube);
+      objects.push(cube);
       scene.add(cube);
     }
     if (maze[i][j] == 2) {
@@ -292,6 +294,8 @@ for (var i = 0; i < maze.length; i++) {
       buttons.push(cube);
       collide.push(cube);
       collide.push(cube2);
+      objects.push(cube);
+      objects.push(cube2);
       scene.add(cube);
       scene.add(cube2);
     }
@@ -309,6 +313,7 @@ for (var i = 0; i < maze.length; i++) {
       cube.name = "door";
       door.push(cube);
       collide.push(cube);
+      objects.push(cube);
 
       scene.add(cube);
 
@@ -334,6 +339,12 @@ scene.add(cube);
 var camera = new THREE.PerspectiveCamera(100, width / height, 0.1, 10000);
 controls = new THREE.PointerLockControls( camera );
 scene.add( controls.getObject() );
+
+var point_on_screen = new THREE.Mesh(new THREE.BoxGeometry(.1, .1, .1), new THREE.MeshBasicMaterial({color: 0x5555ff }));
+point_on_screen.position.set(0,0,-20);
+camera.add(point_on_screen);
+
+raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
 
 var onKeyDown = function ( event ) {
   switch ( event.keyCode ) {
@@ -382,8 +393,8 @@ document.addEventListener( 'keydown', onKeyDown, false );
 document.addEventListener( 'keyup', onKeyUp, false );
 
 
-camera.position.y = 50;
-camera.position.z = 20;
+camera.position.y = 0;
+// camera.position.z = 20;
 camera.position.x = 20;
 // camera.lookAt(cube);
 // scene.add(camera);
@@ -408,26 +419,77 @@ renderer.render(scene, camera);
 
 
 //Add floor
-var groundGeo = new THREE.PlaneBufferGeometry(10000, 10000);
-var groundMat = new THREE.MeshLambertMaterial({
-  color: 0x654321
-});
-groundMat.color.setHSL(0.095, 1, 0.75);
+// var groundGeo = new THREE.PlaneBufferGeometry(10000, 10000);
+// var groundMat = new THREE.MeshLambertMaterial({
+//   color: 0x654321
+// });
+// groundMat.color.setHSL(0.095, 1, 0.75);
 
-var ground = new THREE.Mesh(groundGeo, groundMat);
-ground.position.y = 0;
-ground.rotation.x = -Math.PI / 2;
-ground.receiveShadow = true;
-scene.add(ground);
+// var ground = new THREE.Mesh(groundGeo, groundMat);
+// ground.position.y = 0;
+// ground.rotation.x = -Math.PI / 2;
+// ground.receiveShadow = true;
+// scene.add(ground);
+groundGeo = new THREE.PlaneGeometry( 2000, 2000, 100, 100 );
+groundGeo.rotateX( - Math.PI / 2 );
+for ( var i = 0, l = groundGeo.vertices.length; i < l; i ++ ) {
+  var vertex = groundGeo.vertices[ i ];
+  vertex.x += Math.random() * 20 - 10;
+  vertex.y += Math.random() * 2;
+  vertex.z += Math.random() * 20 - 10;
+}
+for ( var i = 0, l = groundGeo.faces.length; i < l; i ++ ) {
+  var face = groundGeo.faces[ i ];
+  face.vertexColors[ 0 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+  face.vertexColors[ 1 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+  face.vertexColors[ 2 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+}
+groundMat = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
+ground = new THREE.Mesh( groundGeo, groundMat );
+scene.add( ground );
+
+
 //Shadows
 renderer.shadowMap.enabled = true;
+renderer.setClearColor( 0xffffff );
+renderer.setPixelRatio( window.devicePixelRatio );
+renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.render(scene, camera);
-var cubeCenter = new THREE.Vector3(0, 0, 0);
+// var cubeCenter = new THREE.Vector3(0, 0, 0);
 
 
 
 function render() {
   if (!gameOver) {
+    if ( controlsEnabled ) {
+      raycaster.ray.origin.copy( controls.getObject().position );
+      raycaster.ray.origin.y -= 10;
+      var intersections = raycaster.intersectObjects( objects );
+      var isOnObject = intersections.length > 0;
+      var time = performance.now();
+      var delta = ( time - prevTime ) / 1000;
+      velocity.x -= velocity.x * 10.0 * delta;
+      velocity.z -= velocity.z * 10.0 * delta;
+      velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
+      if ( moveForward ) velocity.z -= 400.0 * delta;
+      if ( moveBackward ) velocity.z += 400.0 * delta;
+      if ( moveLeft ) velocity.x -= 400.0 * delta;
+      if ( moveRight ) velocity.x += 400.0 * delta;
+      if ( isOnObject === true ) {
+        velocity.y = Math.max( 0, velocity.y );
+        canJump = true;
+      }
+      controls.getObject().translateX( velocity.x * delta );
+      controls.getObject().translateY( velocity.y * delta );
+      controls.getObject().translateZ( velocity.z * delta );
+      if ( controls.getObject().position.y < 10 ) {
+        velocity.y = 0;
+        controls.getObject().position.y = 10;
+        canJump = true;
+      }
+      prevTime = time;
+  }
+
     // var newLookAt = new THREE.Vector3().addVectors(camera.position, cameraLookAt);
     // camera.lookAt(newLookAt);
     // var moveOk = true;
@@ -458,24 +520,7 @@ function render() {
       camera.position.y = (Math.cos((bounceNum * 5) * Math.PI / 180)) + 4;
     }*/
 
-    var time = performance.now();
-    var delta = ( time - prevTime ) / 1000;
-    velocity.x -= velocity.x * 10.0 * delta;
-    velocity.z -= velocity.z * 10.0 * delta;
-    velocity.y -= 9.8 * 100.0 * delta; // 100.0 = mass
-    if ( moveForward ) velocity.z -= 400.0 * delta;
-    if ( moveBackward ) velocity.z += 400.0 * delta;
-    if ( moveLeft ) velocity.x -= 400.0 * delta;
-    if ( moveRight ) velocity.x += 400.0 * delta;
-    controls.getObject().translateX( velocity.x * delta );
-    controls.getObject().translateY( velocity.y * delta );
-    controls.getObject().translateZ( velocity.z * delta );
-    if ( controls.getObject().position.y < 10 ) {
-      velocity.y = 0;
-      controls.getObject().position.y = 10;
-      canJump = true;
-    }
-    prevTime = time;
+
 
     renderer.render(scene, camera);
     requestAnimationFrame(render);
