@@ -3,7 +3,8 @@
 <head>
 	<script src="./build/three.js"></script>
 	<script src="./build/cannon.js"></script>
-    <script src="https://threejs.org/examples/js/controls/PointerLockControls.js"></script>
+	<script src="https://threejs.org/examples/js/controls/PointerLockControls.js"></script>
+	<script src="./build/CannonDebugRenderer.js"></script>
     <style>
 			html, body {
 				width: 100%;
@@ -40,6 +41,17 @@
 				text-align: center;
 				cursor: pointer;
 			}
+			.log {
+			position: fixed;
+			right: 1em;
+			top: 1em;
+			color: #ACA;
+			font-size: 12px;
+			font-family: monospace;
+			max-height: 25em;
+			min-width: 18em;
+			overflow-y: auto;
+		}
     </style>
 </head>
 <body>
