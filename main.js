@@ -334,7 +334,7 @@ var PointerLockControls = function ( camera, cannonBody ) {
                 sphereShape = new CANNON.Sphere(radius);
                 sphereBody = new CANNON.Body({ mass: mass });
                 sphereBody.addShape(sphereShape);
-                sphereBody.position.set(0,5,0);
+                sphereBody.position.set(10,0,20);
                 sphereBody.linearDamping = 0.9;
                 world.add(sphereBody);
 
@@ -363,7 +363,7 @@ var PointerLockControls = function ( camera, cannonBody ) {
                 camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
                 scene = new THREE.Scene();
-                scene.fog = new THREE.Fog( 0x000000, 0, 500 );
+                scene.fog = new THREE.Fog( 0x000000, 0, 1000 );
 
                 var ambient = new THREE.AmbientLight( 0x111111 );
                 scene.add( ambient );
@@ -383,7 +383,7 @@ var PointerLockControls = function ( camera, cannonBody ) {
                     light.shadow.mapSize.width = 2*512;
                     light.shadow.mapSize.height = 2*512;
 
-                    //light.shadowCameraVisible = true;
+                    // light.shadowCameraVisible = true;
                 }
                 scene.add( light );
 
@@ -413,7 +413,7 @@ var PointerLockControls = function ( camera, cannonBody ) {
               
               function addLightToCamera(){
                 //create player light
-                flashlight = new THREE.AmbientLight(0x6d6dFF, 2, 100, 1);
+                flashlight = new THREE.AmbientLight(0x6d6dFF, 2, 100, 2);
                 camera.add(flashlight);
                 flashlight.position.set(3, 1, 3);
                 flashlight.target = camera;
@@ -444,181 +444,156 @@ var PointerLockControls = function ( camera, cannonBody ) {
                 maze.push([0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0]);
                 maze.push([0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0]);
                 maze.push([0, 0, 0, 1, 0, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0]);
-                var netCfg = {width: 6.0, height: 3.0, depth: 10.25}
+                var netCfg = {width: 10.0, height: 10.0, depth: 10.0}
+                var smallCfg = {width: 5.0, height: 5.0, depth: 5.0}
+                var innerCfg = {width: 3.0, height: 3.0, depth: 3.0}
 
-                for(var i = 0; i < 2; i++){
-                    netMesh = new THREE.Mesh(
+                // for(var i = 0; i < 2; i++){
+                //     netMesh = new THREE.Mesh(
+                //         new THREE.CubeGeometry(netCfg.width, netCfg.height, netCfg.depth),
+                //         new THREE.MeshLambertMaterial({color: 0xCCCCCC})
+                //     )
+                //     netMesh.position.y = netCfg.height / 2.0
+                //     netMesh.position.x = i*7;
+                //     // net
+                //     scene.add(netMesh)
+                //     walls.push(netMesh)
+                // }
+
+                // for(var i = 0; i < walls.length; i++){
+                //     netBody = new CANNON.Body({mass: 0})
+                //     console.log(netBody)
+                //     netBody.addShape(
+                //         new CANNON.Box(
+                //             new CANNON.Vec3(netCfg.width/2, netCfg.height/2, netCfg.depth/2)
+                //         )
+                //     )
+                //     netBody.position.set(walls[i].position.x, walls[i].position.y, walls[i].position.z)
+                //     // netBody.quaternion.setFromEuler(Math.PI / 60.0, 0, 0)
+                //     netBody.material = new CANNON.Material('wall')
+                //     world.add(netBody)
+                //     walls_bodies.push(netBody)
+                //     // walls[i].position.set(
+                //     //     netBody.position.x, netBody.position.y, netBody.position.z
+                //     // )
+                //     // walls[i].quaternion.set(
+                //     //     netBody.quaternion.x, netBody.quaternion.y, netBody.quaternion.z, netBody.quaternion.w
+                //     // )
+        
+        
+                // }
+                
+                //Create maze
+                for (var i = 0; i < maze.length; i++) {
+                  for (var j = 0; j < 24; j++) {
+                    if (maze[i][j] == 1) {
+                        var cube = new THREE.Mesh(
+                          new THREE.CubeGeometry(netCfg.width, netCfg.height, netCfg.depth),
+                          new THREE.MeshLambertMaterial({color: 0xCCCCCC })
+                        );
+                        cube.castShadow = true;
+                        cube.recieveShadow = true;
+                        cube.needsUpdate = true;
+                        cube.position.y = netCfg.height/2.0;
+                        cube.position.x = j * 10;
+                        cube.position.z = i*10;
+                        scene.add(cube);
+                        walls.push(cube)
+
+                    }
+                    if (maze[i][j] == 2) {
+
+                    var cube = new THREE.Mesh(
+                        new THREE.CubeGeometry(smallCfg.width, smallCfg.height, smallCfg.depth),
+                        new THREE.MeshLambertMaterial({color: 0xFF0000 })
+                    );
+
+                    var cube2 = new THREE.Mesh(
+                        new THREE.CubeGeometry(innerCfg.width, innerCfg.hieght, innerCfg.depth), 
+                        new THREE.MeshLambertMaterial({ color: 0x00FF00 })
+                    );
+                    cube2.add(new THREE.PointLight(0x00FF00, 1, 10, .1));
+                    cube.castShadow = true;
+                    cube.recieveShadow = true;
+                    cube.needsUpdate = true;
+
+                    cube.position.y = smallCfg.height/2.0;
+                    cube.position.x = j * 10;
+                    cube.position.z = i*10;
+
+                    cube2.position.y = innerCfg.height/2.0;
+                    cube2.position.x = j * 10;
+                    cube2.position.z = i*10;
+
+                    cube.name = "button" + i + j;
+                    cube2.name = "inner" + i + j;
+                    scene.add(cube);
+                    scene.add(cube2)
+                    walls.push(cube)
+                    walls.push(cube2)
+
+                    }
+                    if (maze[i][j] == 3) {
+
+                    var cube = new THREE.Mesh(
                         new THREE.CubeGeometry(netCfg.width, netCfg.height, netCfg.depth),
-                        new THREE.MeshLambertMaterial({color: 0xCCCCCC})
-                    )
-                    netMesh.position.y = netCfg.height / 2.0
-                    netMesh.position.x = i*7;
-                    // net
-                    scene.add(netMesh)
-                    walls.push(netMesh)
+                        new THREE.MeshLambertMaterial({color: 0xCCCCCC })
+                    );
+                    cube.castShadow = true;
+                    cube.recieveShadow = true;
+                    cube.needsUpdate = true;
+                    cube.position.y = netCfg.height/2.0;
+                    cube.position.x = j * 10;
+                    cube.position.z = i*10;
+
+                    cube.name = "door";
+
+                    scene.add(cube);
+                    walls.push(cube)
+                
+                    }
+                
+                  }
                 }
 
+
                 for(var i = 0; i < walls.length; i++){
+
                     netBody = new CANNON.Body({mass: 0})
-                    console.log(netBody)
-                    netBody.addShape(
-                        new CANNON.Box(
-                            new CANNON.Vec3(netCfg.width/2, netCfg.height/2, netCfg.depth/2)
+                    if((walls[i].name).includes("button")){
+                        netBody.addShape(
+                            new CANNON.Box(
+                                new CANNON.Vec3(smallCfg.width/2.0, smallCfg.height/2.0, smallCfg.depth/2.0)
+                            )
                         )
-                    )
+                    }
+                    else if((walls[i].name).includes("inner")){
+                        netBody.addShape(
+                            new CANNON.Box(
+                                new CANNON.Vec3(innerCfg.width/2.0, innerCfg.height/2.0, innerCfg.depth/2.0)
+                            )
+                        )
+                    }
+                    else{
+                        netBody.addShape(
+                            new CANNON.Box(
+                                new CANNON.Vec3(netCfg.width/2.0, netCfg.height/2.0, netCfg.depth/2.0)
+                            )
+                        )
+                    }
                     netBody.position.set(walls[i].position.x, walls[i].position.y, walls[i].position.z)
-                    netBody.quaternion.setFromEuler(Math.PI / 60.0, 0, 0)
+                    // netBody.quaternion.setFromEuler(Math.PI / 60.0, 0, 0)
                     netBody.material = new CANNON.Material('wall')
                     world.add(netBody)
                     walls_bodies.push(netBody)
                     walls[i].position.set(
                         netBody.position.x, netBody.position.y, netBody.position.z
                     )
-                    walls[i].quaternion.set(
-                        netBody.quaternion.x, netBody.quaternion.y, netBody.quaternion.z, netBody.quaternion.w
-                    )
+                    // walls[i].quaternion.set(
+                    //     netBody.quaternion.x, netBody.quaternion.y, netBody.quaternion.z, netBody.quaternion.w
+                    // )
         
         
-                }
-                
-                //Create maze
-                // var halfExtents = new CANNON.Vec3(1,1,1);
-                // var boxShape = new CANNON.Box(halfExtents);
-                for (var i = 0; i < 0; i++) {
-                  for (var j = 0; j < 24; j++) {
-                    if (maze[i][j] == 1) {
-                      var cubeGeometry = new THREE.CubeGeometry(10, 10, 10);
-                      var cubeMaterial = new THREE.MeshLambertMaterial({
-                        color: 0xCCCCCC
-                      });
-                    //   var boxBody = new CANNON.Body({ mass: 5 });
-                    //   boxBody.addShape(boxShape);
-                    //   world.add(boxBody);
-                      var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-                      cube.castShadow = true;
-                      cube.recieveShadow = true;
-                      cube.needsUpdate = true;
-                      cube.position.set(j * 10, 5, i * 10);
-                    //   boxBody.position.set(j * 10, 5, i * 10)
-                      collide.push(cube);
-                      objects.push(cube);
-                      scene.add(cube);
-                      walls.push(cube)
-
-                      wallBody = new CANNON.Body({mass: 0})
-                      console.log(wallBody);
-                      wallBody.addShape(
-                          new CANNON.Box(
-                              new CANNON.Vec3(cubeGeometry.width/2, cubeGeometry.height/2, cubeGeometry.depth/2)
-                          )
-                      )
-                      wallBody.position.set(cube.position.x, cube.position.y, cube.position.z)
-                      wallBody.quaternion.setFromEuler(Math.PI / 60.0, 0, 0)
-                      wallBody.material = new CANNON.Material('wall')
-                      world.add(wallBody)
-                      walls_bodies.push(wallBody)
-
-                      cube.position.set(
-                        wallBody.position.x, wallBody.position.y, wallBody.position.z
-                      )
-                      cube.quaternion.set(
-                        wallBody.quaternion.x, wallBody.quaternion.y, wallBody.quaternion.z, wallBody.quaternion.w
-                      )
-
-                    }
-                    if (maze[i][j] == 2) {
-                      var cubeGeometry = new THREE.CubeGeometry(5, 5, 5);
-                      var cubeMaterial = new THREE.MeshLambertMaterial({
-                        color: 0xFF0000
-                      });
-                      var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-                      cube.add(new THREE.PointLight(0xFF0000, 1, 10, .1));
-                      var cubeGeometry2 = new THREE.CubeGeometry(3, 3, 3);
-                      var cubeMaterial2 = new THREE.MeshLambertMaterial({
-                        color: 0x00FF00
-                      });
-                    //   var boxBody = new CANNON.Body({ mass: 5 });
-                    //   boxBody.addShape(boxShape);
-                    //   world.add(boxBody);
-                      var cube2 = new THREE.Mesh(cubeGeometry2, cubeMaterial2);
-                      cube2.add(new THREE.PointLight(0x00FF00, 1, 10, .1));
-                      cube.castShadow = true;
-                      cube.recieveShadow = true;
-                      cube.needsUpdate = true;
-                    //   boxBody.position.set(j * 10, 5, i * 10)
-                      cube2.position.set(j * 10, 1.5, i * 10);
-                      cube.position.set(j * 10, 2.5, i * 10);
-                      cube.name = "button" + i + j;
-                      buttons.push(cube);
-                      collide.push(cube);
-                      collide.push(cube2);
-                      objects.push(cube);
-                      objects.push(cube2);
-                      scene.add(cube);
-                      scene.add(cube2);
-                      walls.push(cube)
-
-                      wallBody = new CANNON.Body({mass: 0})
-                      
-                      wallBody.addShape(
-                          new CANNON.Box(
-                              new CANNON.Vec3(cubeGeometry.width/2, cubeGeometry.height/2, cubeGeometry.depth/2)
-                          )
-                      )
-                      wallBody.position.set(cube.position.x, cube.position.y, cube.position.z)
-                      wallBody.quaternion.setFromEuler(Math.PI / 60.0, 0, 0)
-                      wallBody.material = new CANNON.Material('wall')
-                      world.add(wallBody)
-                      walls_bodies.push(wallBody)
-
-                      cube.position.set(
-                        wallBody.position.x, wallBody.position.y, wallBody.position.z
-                      )
-                      cube.quaternion.set(
-                        wallBody.quaternion.x, wallBody.quaternion.y, wallBody.quaternion.z, wallBody.quaternion.w
-                      )
-                    }
-                    if (maze[i][j] == 3) {
-                      var cubeGeometry = new THREE.CubeGeometry(10, 10, 10);
-                      var cubeMaterial = new THREE.MeshLambertMaterial({
-                        color: 0xFF00FF
-                      });
-                      var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-                      cube.add(new THREE.PointLight(0xFF00FF, 1, 10, .1));
-                      cube.castShadow = true;
-                      cube.recieveShadow = true;
-                      cube.needsUpdate = true;
-                    //   boxBody.position.set(j * 10, 5, i * 10)
-                      cube.position.set(j * 10, 5, i * 10);
-                      cube.name = "door";
-                      door.push(cube);
-                      collide.push(cube);
-                      objects.push(cube);
-                      scene.add(cube);
-                      walls.push(cube)
-
-                      wallBody = new CANNON.Body({mass: 0})
-                      wallBody.addShape(
-                          new CANNON.Box(
-                              new CANNON.Vec3(cubeGeometry.width/2, cubeGeometry.height/2, cubeGeometry.depth/2)
-                          )
-                      )
-                      wallBody.position.set(cube.position.x, cube.position.y, cube.position.z)
-                      wallBody.quaternion.setFromEuler(Math.PI / 60.0, 0, 0)
-                      wallBody.material = new CANNON.Material('wall')
-                      world.add(wallBody)
-                      walls_bodies.push(wallBody)
-
-                      cube.position.set(
-                        wallBody.position.x, wallBody.position.y, wallBody.position.z
-                      )
-                      cube.quaternion.set(
-                        wallBody.quaternion.x, wallBody.quaternion.y, wallBody.quaternion.z, wallBody.quaternion.w
-                      )
-                
-                    }
-                
-                  }
                 }
 
                 for(var i = 0; i < walls.length; i++){
@@ -631,6 +606,8 @@ var PointerLockControls = function ( camera, cannonBody ) {
                         log('endContact event')
                     })
                 }
+
+
 
               }
 
@@ -646,6 +623,8 @@ var PointerLockControls = function ( camera, cannonBody ) {
                 }
                 groundMat = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
                 ground = new THREE.Mesh( groundGeo, groundMat );
+                ground.castShadow = true;
+                ground.recieveShadow = true;
                 scene.add( ground );
               }
 
