@@ -2,10 +2,12 @@ function initCannon(){
     // Setup our world
 
     world = new CANNON.World()
-    world.gravity.set(0.0, -10.0, 0.0)
+
+    world.gravity.set(0.0, -40.0, 0.0)
     world.broadphase = new CANNON.SAPBroadphase(world)
-    world.defaultContactMaterial.friction = 0.0001
-    world.defaultContactMaterial.restitution = 0.01
+    world.defaultContactMaterial.friction = 1
+    world.defaultContactMaterial.restitution = .1
+
     world.defaultContactMaterial.contactEquationStiffness = 1000000.0
     world.defaultContactMaterial.frictionEquationStiffness = 100000.0
     // world = new CANNON.World();
@@ -44,11 +46,13 @@ function initCannon(){
     // world.addContactMaterial(physicsContactMaterial);
 
     // Create a sphere
-    var mass = 5, radius = 1.3;
+
+    var mass = 5, radius = .5;
     sphereShape = new CANNON.Sphere(radius);
     sphereBody = new CANNON.Body({ mass: mass });
     sphereBody.addShape(sphereShape);
-    sphereBody.position.set(10,0,20);
+    sphereBody.position.set(10,20,20);
+
     sphereBody.linearDamping = 0.9;
     world.add(sphereBody);
 

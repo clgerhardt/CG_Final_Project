@@ -2,6 +2,9 @@ var bullet_bodieshape = new CANNON.Sphere(0.2);
 var ballGeometry = new THREE.SphereGeometry(bullet_bodieshape.radius, 32, 32);
 var shootDirection = new THREE.Vector3();
 var shootVelo = 35;
+
+var spherebody = new THREE.SphereGeometry(bullet_bodieshape.radius, 32, 32);
+
 function getShootDir(targetVec){
     var vector = targetVec;
     targetVec.set(0,0,1);
@@ -11,7 +14,7 @@ function getShootDir(targetVec){
 }
 
 document.addEventListener("click",function(e){
-    if(controls.enabled==true){
+
         var x = sphereBody.position.x;
         var y = sphereBody.position.y;
         var z = sphereBody.position.z;
@@ -32,7 +35,9 @@ document.addEventListener("click",function(e){
         world.add(ballBody);
         bullet_bodies.push(ballBody);
         // console.log(walls_bodies)
-        for(var i = 0; i < walls_bodies.length; i++){
+
+       for(var i = 0; i < walls_bodies.length; i++){
+
             var mat = new CANNON.ContactMaterial(
                 ballBody.material, walls_bodies[i].material,
                 {
@@ -61,5 +66,7 @@ document.addEventListener("click",function(e){
         z += shootDirection.z * (sphereShape.radius*1.02 + bullet_bodieshape.radius);
         ballBody.position.set(x,y,z);
         ballMesh.position.set(x,y,z);
-    }
+
+
 });
+
