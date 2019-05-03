@@ -60,7 +60,7 @@ function createMaze(){
 
 
     // }
-\
+
     //Create maze
     for (var i = 0; i < maze.length; i++) {
       for (var j = 0; j < 24; j++) {
