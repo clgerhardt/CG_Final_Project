@@ -101,7 +101,7 @@
                 document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
 
 
-        });
+        }
 
     } else {
 
