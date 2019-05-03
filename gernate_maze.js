@@ -1,4 +1,5 @@
 function createMaze(){
+
     maze.push([6, 1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     maze.push([6, 1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     maze.push([6, 1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
@@ -20,6 +21,7 @@ function createMaze(){
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+
     var netCfg = {width: 10.0, height: 10.0, depth: 10.0}
     var smallCfg = {width: 5.0, height: 5.0, depth: 5.0}
     var innerCfg = {width: 3.0, height: 3.0, depth: 3.0}
@@ -58,7 +60,7 @@ function createMaze(){
 
 
     // }
-
+\
     //Create maze
     for (var i = 0; i < maze.length; i++) {
       for (var j = 0; j < 24; j++) {
@@ -78,6 +80,7 @@ function createMaze(){
 
         }
         if (maze[i][j] == 2) {
+
 
           var cube = new THREE.Mesh(
               new THREE.CubeGeometry(smallCfg.width, smallCfg.height, smallCfg.depth),
@@ -108,6 +111,7 @@ function createMaze(){
           walls.push(cube)
           walls.push(cube2)
 
+
         }
         if (maze[i][j] == 3) {
 
@@ -126,6 +130,7 @@ function createMaze(){
 
         scene.add(cube);
         walls.push(cube)
+
 
         }
         if (maze[i][j] == 4){
@@ -208,6 +213,7 @@ function createMaze(){
           walls.push(cube)
           spinnersMesh.push(cube);
         }
+
       }
     }
 
@@ -229,6 +235,7 @@ function createMaze(){
                 )
             )
         }
+
         else if(walls[i].name.includes("ramp")){
             netBody.addShape(
                 new CANNON.Box(
@@ -271,6 +278,7 @@ function createMaze(){
             netBody.position.set(walls[i].position.x, walls[i].position.y, walls[i].position.z)
             spinnersCollide.push(netBody);
         }
+
         else{
             netBody.addShape(
                 new CANNON.Box(
@@ -278,8 +286,10 @@ function createMaze(){
                 )
             )
 
+
         }
         netBody.position.set(walls[i].position.x, walls[i].position.y, walls[i].position.z)
+
 
         netBody.material = new CANNON.Material('wall')
         world.add(netBody)
@@ -306,4 +316,6 @@ function createMaze(){
         })
     }
 
+
   }
+

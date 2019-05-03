@@ -19,6 +19,7 @@
     var walls = [];
     var walls_bodies = [];
     var cannonDebugRenderer;
+
     var spinnersMesh = [];
     var spinnersCollide = [];
     var blocker = document.getElementById( 'blocker' );
@@ -96,7 +97,9 @@
 
                 element.requestPointerLock();
 
-            }
+                document.addEventListener( 'fullscreenchange', fullscreenchange, false );
+                document.addEventListener( 'mozfullscreenchange', fullscreenchange, false );
+
 
         }, false );
 
@@ -135,6 +138,7 @@
     var frameNum = 0;
     function render() {
 
+
         requestAnimationFrame( render );
         if(controls.enabled){
             world.step(dt);
@@ -144,18 +148,21 @@
                 bullets[i].position.copy(bullet_bodies[i].position);
                 bullets[i].quaternion.copy(bullet_bodies[i].quaternion);
             }
+
             for(var j = 0; j < spinnersMesh.length; j++){
               spinnersMesh[j].rotation.y += .01;
               spinnersCollide[j].quaternion.setFromEuler(0, (Math.PI / 6)+(frameNum+150.3112), 0);
               frameNum += .01;
             }
 
+
         }
 
         controls.update( Date.now() - time );
-        //cannonDebugRenderer.update()
+
         renderer.render( scene, camera );
         time = Date.now();
 
 
     }
+
