@@ -3,7 +3,8 @@
 <head>
 	<script src="./build/three.js"></script>
 	<script src="./build/cannon.js"></script>
-    <script src="https://threejs.org/examples/js/controls/PointerLockControls.js"></script>
+	<script src="https://threejs.org/examples/js/controls/PointerLockControls.js"></script>
+	<script src="./build/CannonDebugRenderer.js"></script>
     <style>
 			html, body {
 				width: 100%;
@@ -40,6 +41,17 @@
 				text-align: center;
 				cursor: pointer;
 			}
+			.log {
+			position: fixed;
+			right: 1em;
+			top: 1em;
+			color: #ACA;
+			font-size: 12px;
+			font-family: monospace;
+			max-height: 25em;
+			min-width: 18em;
+			overflow-y: auto;
+		}
     </style>
 </head>
 <body>
@@ -51,7 +63,17 @@
             (W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
         </div>
 
-    </div>
+	</div>
+	<script src="./light_attached_to_camera.js"></script>
+	<script src="./gun_attched_to_camera.js"></script>
+	<script src="./renderer_setup.js"></script>
+	<script src="./log_ui.js"></script>
+	<script src="./shooting_event.js"></script>
+	<script src="./pointer_lock.js"></script>
+	<script src="./init_cannon.js"></script>
+	<script src="./gernate_maze.js"></script>
+	<script src="./gernate_ground.js"></script>
+	<script src="./create_camera.js"></script>
     <script src="./main.js"></script>
 </body>
 </html>
