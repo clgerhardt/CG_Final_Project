@@ -24,6 +24,7 @@
     var smaccerMesh = [];
     var smaccerCollide = [];
     var checkPointMesh = [];
+    var respawnPosition = {x:10 ,y:10 ,z:0};
     var blocker = document.getElementById( 'blocker' );
     var instructions = document.getElementById( 'instructions' );
 
@@ -160,7 +161,8 @@
             }
 
             if(sphereBody.position.y < 3){
-              sphereBody.position.set(10,10,0);
+              sphereBody.position.set(respawnPosition.x, respawnPosition.y, respawnPosition.z);
+              sphereBody.velocity.set(0,0,0);
             }
 
         }

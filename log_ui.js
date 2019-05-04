@@ -15,4 +15,5 @@ function log(s) {
     var el = document.getElementById('log')
     s = el.innerHTML + s + '<br/>'
     el.innerHTML = s
+
 }
