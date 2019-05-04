@@ -21,6 +21,8 @@
     var cannonDebugRenderer;
     var spinnersMesh = [];
     var spinnersCollide = [];
+    var smaccerMesh = [];
+    var smaccerCollide = [];
     var blocker = document.getElementById( 'blocker' );
     var instructions = document.getElementById( 'instructions' );
 
@@ -120,7 +122,7 @@
         setUpRenderer();
 
         window.addEventListener( 'resize', onWindowResize, false );
-        //cannonDebugRenderer = new THREE.CannonDebugRenderer(scene, world);
+        cannonDebugRenderer = new THREE.CannonDebugRenderer(scene, world);
 
     }
 
@@ -133,6 +135,7 @@
 
     var dt = 1/60;
     var frameNum = 0;
+    var frameNumSmacc = 0;
     function render() {
 
         requestAnimationFrame( render );
@@ -145,15 +148,21 @@
                 bullets[i].quaternion.copy(bullet_bodies[i].quaternion);
             }
             for(var j = 0; j < spinnersMesh.length; j++){
-              spinnersMesh[j].rotation.y += .01;
+              spinnersMesh[j].quaternion.setFromEuler(new THREE.Euler( 0, (Math.PI / 6)+(frameNum+150.3112), 0, 'XYZ' ));
               spinnersCollide[j].quaternion.setFromEuler(0, (Math.PI / 6)+(frameNum+150.3112), 0);
-              frameNum += .01;
+              frameNum -= .002;
             }
+            for(var j = 0; j < smaccerMesh.length; j++){
+              smaccerMesh[j].quaternion.setFromEuler(new THREE.Euler( 0, (Math.PI / 6)+(frameNumSmacc+150.3112), 0, 'XYZ' ));
+              smaccerCollide[j].quaternion.setFromEuler(0, (Math.PI / 6)+(frameNumSmacc+150.3112), 0);
+              frameNumSmacc += .002;
+            }
+
 
         }
 
         controls.update( Date.now() - time );
-        //cannonDebugRenderer.update()
+        cannonDebugRenderer.update()
         renderer.render( scene, camera );
         time = Date.now();
 
