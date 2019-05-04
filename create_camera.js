@@ -3,7 +3,6 @@ function createCamera(){
 
     var l2ight = new THREE.PointLight(0xFF00FF, 1, 20, .1);
     camera.add(l2ight);
-
     scene = new THREE.Scene();
     scene.fog = new THREE.Fog( 0x000000, 0, 1000 );
 

@@ -23,6 +23,8 @@
     var spinnersCollide = [];
     var smaccerMesh = [];
     var smaccerCollide = [];
+    var checkPointMesh = [];
+    var respawnPosition = {x:10 ,y:10 ,z:0};
     var blocker = document.getElementById( 'blocker' );
     var instructions = document.getElementById( 'instructions' );
 
@@ -122,7 +124,7 @@
         setUpRenderer();
 
         window.addEventListener( 'resize', onWindowResize, false );
-        cannonDebugRenderer = new THREE.CannonDebugRenderer(scene, world);
+        //cannonDebugRenderer = new THREE.CannonDebugRenderer(scene, world);
 
     }
 
@@ -158,11 +160,17 @@
               frameNumSmacc += .002;
             }
 
+            if(sphereBody.position.y < 3){
+              sphereBody.position.set(respawnPosition.x, respawnPosition.y, respawnPosition.z);
+              sphereBody.velocity.set(0,0,0);
+            }
 
         }
 
         controls.update( Date.now() - time );
+
         // cannonDebugRenderer.update()
+
         renderer.render( scene, camera );
         time = Date.now();
 
