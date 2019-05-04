@@ -49,7 +49,7 @@ function initCannon(){
     sphereBody = new CANNON.Body({ mass: mass });
     sphereBody.addShape(sphereShape);
     sphereBody.friction = 1;
-    sphereBody.position.set(230,10,290);
+    sphereBody.position.set(10,10,0);
     sphereBody.linearDamping = 0.9;
     world.add(sphereBody);
 

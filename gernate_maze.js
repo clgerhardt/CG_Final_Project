@@ -1,9 +1,9 @@
 function createMaze(){
     maze.push([6, 1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     maze.push([6, 1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-    maze.push([6, 1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([6, 10, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     maze.push([0, 0, 0, 0, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 0, 0]);
-    maze.push([0, 5, 0, 0, 1, 1, 1, 7, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 7]);
+    maze.push([0, 5, 0, 0, 1, 1, 1, 7, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 10, 1, 7]);
     maze.push([0, 0, 0, 0, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 7]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7]);
@@ -14,7 +14,7 @@ function createMaze(){
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 6, 0, 0, 0, 0, 0, 0]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0]);
-    maze.push([0, 0, 8, 0, 0, 0, 0, 6, 1, 1, 0, 1, 0, 0, 1, 0, 1, 6, 0, 0, 0, 0, 0, 0]);
+    maze.push([0, 0, 8, 0, 0, 0, 0, 6, 1, 1, 0, 1, 0, 0, 1, 0, 10, 6, 0, 0, 0, 0, 0, 0]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     maze.push([0, 7, 0, 0, 0, 0, 6, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
@@ -210,7 +210,23 @@ function createMaze(){
           walls.push(cube)
           smaccerMesh.push(cube);
         }
-
+        if (maze[i][j] == 10){
+          var cube = new THREE.Mesh(
+            new THREE.CubeGeometry(netCfg.width, netCfg.height, netCfg.depth),
+            new THREE.MeshLambertMaterial({color: 0xF0FF00 })
+          );
+          
+          cube.castShadow = true;
+          cube.recieveShadow = true;
+          cube.needsUpdate = true;
+          cube.position.y = netCfg.height/2;
+          cube.position.x = j * 10;
+          cube.position.z = (i * 10) ;
+          cube.name = "checkpoint" + i + j;
+          scene.add(cube);
+          walls.push(cube)
+          checkPointMesh.push(cube);
+        }
 
       }
     }
