@@ -162,7 +162,7 @@
         }
 
         controls.update( Date.now() - time );
-        cannonDebugRenderer.update()
+        // cannonDebugRenderer.update()
         renderer.render( scene, camera );
         time = Date.now();
 
