@@ -1,14 +1,15 @@
 function createGround(){
+   var textureLoader = new THREE.TextureLoader();
+
+    var lava = textureLoader.load( './textures/Hardening_Lava_02.png' );
+    lava.wrapS = THREE.RepeatWrapping;
+    lava.wrapT = THREE.RepeatWrapping;
+    lava.repeat.set( 2000/2, 2000/2 );
+
     groundGeo = new THREE.PlaneGeometry( 2000, 2000, 100, 100 );
     groundGeo.applyMatrix(new THREE.Matrix4().makeRotationX( - Math.PI / 2 ));
 
-    for ( var i = 0, l = groundGeo.faces.length; i < l; i ++ ) {
-      var face = groundGeo.faces[ i ];
-      face.vertexColors[ 0 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-      face.vertexColors[ 1 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-      face.vertexColors[ 2 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-    }
-    groundMat = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
+    groundMat = new THREE.MeshBasicMaterial( { map: lava, metalness: 0.25, roughness: 0.75 } );
     ground = new THREE.Mesh( groundGeo, groundMat );
     ground.castShadow = true;
     ground.recieveShadow = true;
