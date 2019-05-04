@@ -43,7 +43,12 @@ function createMaze(){
     var smallCfg = {width: 5.0, height: 5.0, depth: 5.0}
     var innerCfg = {width: 3.0, height: 3.0, depth: 3.0}
 
+    var textureLoader = new THREE.TextureLoader();
 
+    var cobble_stone = textureLoader.load( './textures/ground084.jpgword' );
+    cobble_stone.wrapS = THREE.RepeatWrapping;
+    cobble_stone.wrapT = THREE.RepeatWrapping;
+    cobble_stone.repeat.set( 1, 1 );
 
     //Create maze
     for (var i = 0; i < maze.length; i++) {
@@ -51,7 +56,7 @@ function createMaze(){
         if (maze[i][j] == 1) {
             var cube = new THREE.Mesh(
               new THREE.CubeGeometry(netCfg.width, netCfg.height, netCfg.depth),
-              new THREE.MeshLambertMaterial({color: 0xCCCCCC })
+              new THREE.MeshLambertMaterial({ map: cobble_stone, metalness: 0.25, roughness: 0.75 })
             );
             cube.castShadow = true;
             cube.recieveShadow = true;
@@ -67,12 +72,12 @@ function createMaze(){
 
           var cube = new THREE.Mesh(
               new THREE.CubeGeometry(smallCfg.width, smallCfg.height, smallCfg.depth),
-              new THREE.MeshLambertMaterial({color: 0xFF0000 })
+              new THREE.MeshLambertMaterial({ map: cobble_stone, metalness: 0.25, roughness: 0.75 })
           );
 
           var cube2 = new THREE.Mesh(
               new THREE.CubeGeometry(innerCfg.width, innerCfg.hieght, innerCfg.depth),
-              new THREE.MeshLambertMaterial({ color: 0x00FF00 })
+              new THREE.MeshLambertMaterial({ map: cobble_stone, metalness: 0.25, roughness: 0.75 })
           );
           cube2.add(new THREE.PointLight(0x00FF00, 1, 10, .1));
           cube.castShadow = true;
@@ -99,7 +104,7 @@ function createMaze(){
 
         var cube = new THREE.Mesh(
             new THREE.CubeGeometry(netCfg.width, netCfg.height, netCfg.depth),
-            new THREE.MeshLambertMaterial({color: 0xCCCCCC })
+            new THREE.MeshLambertMaterial({ map: cobble_stone, metalness: 0.25, roughness: 0.75 })
         );
         cube.castShadow = true;
         cube.recieveShadow = true;
@@ -117,7 +122,7 @@ function createMaze(){
         if (maze[i][j] == 4){
           var cube = new THREE.Mesh(
             new THREE.CubeGeometry(netCfg.width, netCfg.height, netCfg.depth),
-            new THREE.MeshLambertMaterial({color: 0xCCCCCC })
+            new THREE.MeshLambertMaterial({ map: cobble_stone, metalness: 0.25, roughness: 0.75 })
           );
           cube.castShadow = true;
           cube.recieveShadow = true;
@@ -133,7 +138,7 @@ function createMaze(){
         if (maze[i][j] == 5){
           var cube = new THREE.Mesh(
             new THREE.CubeGeometry(netCfg.width, netCfg.height, netCfg.depth),
-            new THREE.MeshLambertMaterial({color: 0xCCCCCC })
+            new THREE.MeshLambertMaterial({ map: cobble_stone, metalness: 0.25, roughness: 0.75 })
           );
           cube.castShadow = true;
           cube.recieveShadow = true;
@@ -149,7 +154,7 @@ function createMaze(){
         if (maze[i][j] == 6){
           var cube = new THREE.Mesh(
             new THREE.CubeGeometry(netCfg.width, netCfg.height, netCfg.depth),
-            new THREE.MeshLambertMaterial({color: 0xCCCCCC })
+            new THREE.MeshLambertMaterial({ map: cobble_stone, metalness: 0.25, roughness: 0.75 })
           );
           cube.castShadow = true;
           cube.recieveShadow = true;
@@ -165,7 +170,7 @@ function createMaze(){
         if (maze[i][j] == 7){
           var cube = new THREE.Mesh(
             new THREE.CubeGeometry(netCfg.width, netCfg.height, netCfg.depth),
-            new THREE.MeshLambertMaterial({color: 0xCCCCCC })
+            new THREE.MeshLambertMaterial({ map: cobble_stone, metalness: 0.25, roughness: 0.75 })
           );
           cube.castShadow = true;
           cube.recieveShadow = true;
@@ -181,7 +186,7 @@ function createMaze(){
         if (maze[i][j] == 8){
           var cube = new THREE.Mesh(
             new THREE.CubeGeometry(netCfg.width*4, netCfg.height, netCfg.depth),
-            new THREE.MeshLambertMaterial({color: 0xCCCCCC })
+            new THREE.MeshLambertMaterial({ map: cobble_stone, metalness: 0.25, roughness: 0.75 })
           );
           cube.castShadow = true;
           cube.recieveShadow = true;
@@ -197,7 +202,7 @@ function createMaze(){
         if (maze[i][j] == 9){
           var cube = new THREE.Mesh(
             new THREE.CubeGeometry(netCfg.width*6, netCfg.height, netCfg.depth),
-            new THREE.MeshLambertMaterial({color: 0xCCCCCC })
+            new THREE.MeshLambertMaterial({ map: cobble_stone, metalness: 0.25, roughness: 0.75 })
           );
           cube.castShadow = true;
           cube.recieveShadow = true;
