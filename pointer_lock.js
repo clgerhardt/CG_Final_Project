@@ -20,7 +20,7 @@ var PointerLockControls = function ( camera, cannonBody ) {
     var moveRight = false;
 
     var canJump = false;
-    var velocity = cannonBody.velocity;
+
     var contactNormal = new CANNON.Vec3(); // Normal in the contact, pointing *out* of whatever the player touched
     var upAxis = new CANNON.Vec3(0,1,0);
     cannonBody.addEventListener("collide",function(e){
@@ -39,12 +39,14 @@ var PointerLockControls = function ( camera, cannonBody ) {
 
         for(var j = 0; j < checkPointMesh.length; j++){
           if(checkPointMesh[j].position.distanceTo(sphereBody.position)<11){
-            checkPointMesh[j].material.color.setHex( 0xffffff );
+
             console.log(checkPointMesh[j].position);
             respawnPosition.x = checkPointMesh[j].position.x;
             respawnPosition.y = checkPointMesh[j].position.y+5;
             respawnPosition.z = checkPointMesh[j].position.z;
-            cannonBody.velocity.set(0,0,0);
+            checkPointMesh[j].material.map = new THREE.TextureLoader().load('./textures/check_point_on.png');
+            checkPointMesh[j].needsUpdate = true;
+            checkPointMesh.splice(j, 1);
           }
         }
     });
