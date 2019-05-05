@@ -46,7 +46,7 @@ var PointerLockControls = function ( camera, cannonBody ) {
             respawnPosition.z = checkPointMesh[j].position.z;
             checkPointMesh[j].material.map = new THREE.TextureLoader().load('./textures/check_point_on.png');
             checkPointMesh[j].needsUpdate = true;
-            checkPointMesh.splice(1,j);
+            checkPointMesh.splice(j, 1);
           }
         }
     });

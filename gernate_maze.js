@@ -24,7 +24,7 @@ function createMaze(){
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 0, 0, 6, 7]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 6, 7]);
-    maze.push([6, 0, 1, 10, 0, 0, 8, 0, 9, 0, 8, 1, 10, 0, 4, 4, 4, 0, 0, 1, 0, 0, 6, 7]);
+    maze.push([6, 0, 1, 10, 0, 0, 8, 0, 9, 0, 8, 1, 0, 10, 4, 4, 4, 0, 0, 1, 0, 0, 6, 7]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 6]);
     maze.push([6, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 6]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 6]);
@@ -246,7 +246,7 @@ function createMaze(){
 
       }
     }
-
+    console.log(checkPointMesh.length);
     var sky_box = textureLoader.load( './textures/skybox.jpg' );
     sky_box.wrapS = THREE.RepeatWrapping;
     sky_box.wrapT = THREE.RepeatWrapping;
