@@ -3,7 +3,7 @@ function setUpRenderer(){
     renderer.shadowMap.enabled = true;
     renderer.shadowMapSoft = true;
     renderer.setSize( window.innerWidth, window.innerHeight );
-    //renderer.setClearColor( scene.fog.color, 1 );
+    renderer.setClearColor( scene.fog.color, 1 );
 
     document.body.appendChild(renderer.domElement);
 }
