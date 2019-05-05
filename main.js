@@ -28,6 +28,9 @@
     var blocker = document.getElementById( 'blocker' );
     var instructions = document.getElementById( 'instructions' );
     var music = document.getElementById("music");
+    var fogColor;
+    var dy;
+    var particleGeometry;
     
 
     var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
@@ -111,6 +114,18 @@
         instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
 
     }
+    function moveParticle(){
+        for(var i = 0; i < particleGeometry.vertices.length; i++){
+            if( particleGeometry.vertices[i].y < 10){
+                particleGeometry.vertices[i].add(new THREE.Vector3(0,.1,0));
+            }
+            else{
+                particleGeometry.vertices[i].add(new THREE.Vector3(0,-10,0));
+            }
+        }
+
+        
+    }
 
     initCannon();
     init();
@@ -121,6 +136,7 @@
         createCamera();
         createMaze();
         createGround();
+        createParticles();
         addGunLocationToCamera();
         setUpRenderer();
 
@@ -171,6 +187,9 @@
 
         controls.update( Date.now() - time );
 
+        // move particles
+        moveParticle(particleGeometry);
+        particleGeometry.verticesNeedUpdate = true;
         // cannonDebugRenderer.update()
 
         renderer.render( scene, camera );
