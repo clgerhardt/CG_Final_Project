@@ -27,6 +27,8 @@
     var respawnPosition = {x:10 ,y:10 ,z:0};
     var blocker = document.getElementById( 'blocker' );
     var instructions = document.getElementById( 'instructions' );
+    var music = document.getElementById("music");
+    
 
     var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
@@ -115,7 +117,6 @@
     render();
 
     function init() {
-
         initUI();
         createCamera();
         createMaze();
@@ -125,7 +126,6 @@
 
         window.addEventListener( 'resize', onWindowResize, false );
         //cannonDebugRenderer = new THREE.CannonDebugRenderer(scene, world);
-
     }
 
     function onWindowResize() {
@@ -163,6 +163,8 @@
             if(sphereBody.position.y < 3){
               sphereBody.position.set(respawnPosition.x, respawnPosition.y, respawnPosition.z);
               sphereBody.velocity.set(0,0,0);
+              var x = document.getElementById("death");
+              x.play();
             }
 
         }

@@ -3,7 +3,7 @@ function createCamera(){
 
 
     scene = new THREE.Scene();
-    //scene.fog = new THREE.Fog( 0x000000, 0, 0 );
+    //scene.fog = new THREE.Fog( 0xffffff, 1, 100 );
 
 
 
@@ -46,4 +46,8 @@ function createCamera(){
 
     controls = new PointerLockControls( camera , sphereBody );
     scene.add( controls.getObject() );
+
+    var music = document.getElementById("music");
+    music.loop = true;
+    music.play();
 }
