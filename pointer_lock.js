@@ -47,6 +47,8 @@ var PointerLockControls = function ( camera, cannonBody ) {
             checkPointMesh[j].material.map = new THREE.TextureLoader().load('./textures/check_point_on.png');
             checkPointMesh[j].needsUpdate = true;
             checkPointMesh.splice(j, 1);
+            var x = document.getElementById("check");
+            x.play();
           }
         }
     });
