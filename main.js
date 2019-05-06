@@ -29,7 +29,7 @@
     var instructions = document.getElementById( 'instructions' );
     var music = document.getElementById("music");
     var fogColor;
-    var dy;
+    var dy, score;
     var particleGeometry;
     
 

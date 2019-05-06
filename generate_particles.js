@@ -10,8 +10,8 @@ function createParticles(){
       particleGeometry.vertices.push(new THREE.Vector3(px,py,pz));
     }
 
-    var pMaterial = new THREE.PointCloudMaterial({color: 0x000000});
+    var pMaterial = new THREE.PointsMaterial({color: 0x808080});
 
-    var pCloud = new THREE.PointCloud(particleGeometry, material);
-    scene.add(pCloud);
+    var points = new THREE.Points(particleGeometry, material);
+    scene.add(points);
 }
