@@ -137,7 +137,10 @@
     function calculateScore(){
         var time = clock.getElapsedTime();
 
-        
+        var timescore = (Math.cos(1/time)*10);
+
+        score -= timescore;
+        //log(score);
 
     }
 
@@ -208,7 +211,7 @@
         moveParticle(particleGeometry);
         particleGeometry.verticesNeedUpdate = true;
         // cannonDebugRenderer.update()
-        
+        calculateScore();
         renderer.render( scene, camera );
         time = Date.now();
 
