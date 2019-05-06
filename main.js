@@ -29,7 +29,8 @@
     var instructions = document.getElementById( 'instructions' );
     var music = document.getElementById("music");
     var fogColor;
-    var dy, score;
+    var dy;
+    var score = 0;
     var particleGeometry;
     var clock;
     
@@ -131,7 +132,7 @@
     // calculate score as a function of time
     function calculateScore(){
         var time = clock.getElapsedTime();
-        
+
     }
 
     initCannon();
@@ -202,6 +203,9 @@
         particleGeometry.verticesNeedUpdate = true;
         // cannonDebugRenderer.update()
         //log(clock.getElapsedTime());
+        //score++;
+        //log(score);
+        //document.getElementById("score").innerHTML = "Your score was: " + score;
         renderer.render( scene, camera );
         time = Date.now();
 
