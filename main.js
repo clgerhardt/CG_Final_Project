@@ -137,6 +137,8 @@
     function calculateScore(){
         var time = clock.getElapsedTime();
 
+        
+
     }
 
     initCannon();
