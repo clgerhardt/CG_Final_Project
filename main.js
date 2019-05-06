@@ -31,6 +31,7 @@
     var fogColor;
     var dy, score;
     var particleGeometry;
+    var clock;
     
 
     var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
@@ -100,7 +101,7 @@
                 element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
 
                 element.requestFullscreen();
-
+                clock.start();
             } else {
 
                 element.requestPointerLock();
@@ -127,6 +128,12 @@
         
     }
 
+    // calculate score as a function of time
+    function calculateScore(){
+        var time = clock.getElapsedTime();
+        
+    }
+
     initCannon();
     init();
     render();
@@ -139,6 +146,8 @@
         createParticles();
         addGunLocationToCamera();
         setUpRenderer();
+
+        clock = new THREE.Clock(false);
 
         window.addEventListener( 'resize', onWindowResize, false );
         //cannonDebugRenderer = new THREE.CannonDebugRenderer(scene, world);
@@ -157,6 +166,7 @@
     function render() {
 
         requestAnimationFrame( render );
+        
         if(controls.enabled){
             world.step(dt);
 
@@ -191,7 +201,7 @@
         moveParticle(particleGeometry);
         particleGeometry.verticesNeedUpdate = true;
         // cannonDebugRenderer.update()
-
+        //log(clock.getElapsedTime());
         renderer.render( scene, camera );
         time = Date.now();
 
