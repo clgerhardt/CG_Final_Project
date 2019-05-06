@@ -116,6 +116,12 @@
         instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
 
     }
+    function calculateColorRGB(height){
+        var rgbNumPercentage = (100 - ((height/10)*100))/100;
+        var rgbNum = 256 * rgbNumPercentage;
+        var color = new THREE.Color(rgbNum,0,0);
+        return color;
+    }
     function moveParticle(){
         for(var i = 0; i < particleGeometry.vertices.length; i++){
             if( particleGeometry.vertices[i].y < 10){
@@ -125,8 +131,6 @@
                 particleGeometry.vertices[i].add(new THREE.Vector3(0,-10,0));
             }
         }
-
-        
     }
 
     // calculate score as a function of time
@@ -202,10 +206,7 @@
         moveParticle(particleGeometry);
         particleGeometry.verticesNeedUpdate = true;
         // cannonDebugRenderer.update()
-        //log(clock.getElapsedTime());
-        //score++;
-        //log(score);
-        //document.getElementById("score").innerHTML = "Your score was: " + score;
+        
         renderer.render( scene, camera );
         time = Date.now();
 
