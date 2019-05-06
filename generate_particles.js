@@ -9,10 +9,9 @@ function createParticles(){
 
       particleGeometry.vertices.push(new THREE.Vector3(px,py,pz));
     }
-
     var pColor = new THREE.Color(256,0,0);
     var pMaterial = new THREE.PointsMaterial({color: pColor});
 
-    var points = new THREE.Points(particleGeometry, material);
+    var points = new THREE.Points(particleGeometry, pMaterial);
     scene.add(points);
 }
