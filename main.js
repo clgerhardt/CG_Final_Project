@@ -24,16 +24,20 @@
     var smaccerMesh = [];
     var smaccerCollide = [];
     var checkPointMesh = [];
+    var endPoint;
+    var gameOver = false;
     var respawnPosition = {x:10 ,y:10 ,z:0};
     var blocker = document.getElementById( 'blocker' );
     var instructions = document.getElementById( 'instructions' );
     var music = document.getElementById("music");
+
     var fogColor;
     var dy;
     var score = 0;
     var particleGeometry;
     var clock;
     
+
 
     var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
@@ -173,12 +177,20 @@
     var dt = 1/60;
     var frameNum = 0;
     var frameNumSmacc = 0;
+    var timeSinceLastCall = Date.now();
     function render() {
 
+
+        if(!gameOver){
+
         requestAnimationFrame( render );
-        
+
         if(controls.enabled){
+          if(Date.now() - timeSinceLastCall >= .167){
             world.step(dt);
+            timeSinceLastCall = Date.now();
+          }
+
 
             // Update bullet_bodies
             for(var i=0; i<bullet_bodies.length; i++){
@@ -211,9 +223,13 @@
         moveParticle(particleGeometry);
         particleGeometry.verticesNeedUpdate = true;
         // cannonDebugRenderer.update()
+
         calculateScore();
         renderer.render( scene, camera );
+
         time = Date.now();
 
+          renderer.render( scene, camera );
+        }
 
     }

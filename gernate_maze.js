@@ -19,7 +19,7 @@ function createMaze(){
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     maze.push([0, 7, 0, 0, 0, 0, 6, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     maze.push([0, 0, 0, 6, 0, 1, 0, 1, 0, 4, 6, 4, 0, 1, 4, 6, 0, 0, 0, 0, 0, 0, 0, 0]);
-    maze.push([6, 0, 10, 0, 1, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 7, 6, 6, 6, 6, 0, 0, 6]);
+    maze.push([6, 0, 10, 0, 1, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 7, 7, 7, 7, 7, 0, 0, 6]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 0, 0, 6, 7]);
@@ -35,10 +35,35 @@ function createMaze(){
     maze.push([6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     maze.push([0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 1, 0, 0]);
+    maze.push([6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 9, 0, 0, 0, 0, 0]);
+    maze.push([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10]);
+    maze.push([10, 1, 0, 1, 0, 1, 1, 1, 1, 7, 0, 0, 0, 0, 1, 10, 1, 7, 0, 0, 1, 0, 0, 1]);
+    maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]);
+    maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]);
+    maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]);
+    maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5]);
     maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-    maze.push([6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-    maze.push([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([1, 0, 0, 8, 0, 0, 0, 0, 8, 0, 0, 0, 0, 8, 0, 0, 0, 0, 8, 0, 0, 6, 1, 10]);
     maze.push([10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    maze.push([11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+
     var netCfg = {width: 10.0, height: 10.0, depth: 10.0}
     var smallCfg = {width: 5.0, height: 5.0, depth: 5.0}
     var innerCfg = {width: 3.0, height: 3.0, depth: 3.0}
@@ -243,18 +268,48 @@ function createMaze(){
           walls.push(cube)
           checkPointMesh.push(cube);
         }
+        if (maze[i][j] == 11){
+          var cube = new THREE.Mesh(
+            new THREE.CubeGeometry(netCfg.width, netCfg.height, netCfg.depth),
+            new THREE.MeshLambertMaterial({map: check_point_off})
+          );
 
+          cube.castShadow = true;
+          cube.recieveShadow = true;
+          cube.needsUpdate = true;
+          cube.position.y = netCfg.height/2;
+          cube.position.x = j * 10;
+          cube.position.z = (i * 10) ;
+          cube.name = "endPoint" + i + j;
+          scene.add(cube);
+          walls.push(cube)
+          endPoint = cube;
+        }
       }
     }
-    console.log(checkPointMesh.length);
-    var sky_box = textureLoader.load( './textures/skybox.jpg' );
-    sky_box.wrapS = THREE.RepeatWrapping;
-    sky_box.wrapT = THREE.RepeatWrapping;
-    sky_box.repeat.set( 1, 1 );
 
-    var material = new THREE.MeshLambertMaterial({ map: sky_box, metalness: 0.25, roughness: 0.75, side: THREE.DoubleSide });
-    var skyboxMesh = new THREE.Mesh(new THREE.CubeGeometry(2000,2000,2000,1,1,1,null,true), material);
-    skyboxMesh.position.y = 999;
+    //var sky_box = textureLoader.load( './textures/skybox.jpg' );
+    var video = document.getElementById( 'video' );
+    var texture = new THREE.VideoTexture(video);
+    texture.needsUpdate;
+    texture.minFilter = THREE.LinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+    texture.format = THREE.RGBFormat;
+    texture.crossOrigin = 'anonymous';
+    video.src = "textures/nebula.mp4";
+    video.load();
+    video.play();
+    video.loop = true;
+    //sky_box.wrapS = THREE.RepeatWrapping;
+    //sky_box.wrapT = THREE.RepeatWrapping;
+    //sky_box.repeat.set( 1, 1 );
+
+    var material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+    material.needsUpdate = true;
+    var skyboxMesh = new THREE.Mesh(new THREE.SphereGeometry(2000,64,64), material);
+    skyboxMesh.position.y = -100;
+    skyboxMesh.needsUpdate = true;
+    skyboxMesh.rotation.z += Math.PI / 2;
     scene.add(skyboxMesh);
 
 
@@ -263,7 +318,7 @@ function createMaze(){
     for(var i = 0; i < walls.length; i++){
 
         netBody = new CANNON.Body({mass: 0})
-        if((walls[i].name).includes("button")){
+        if((walls[i].name).includes("button") || walls[i].name.includes("endPoint")){
             netBody.addShape(
                 new CANNON.Box(
                     new CANNON.Vec3(smallCfg.width/2.0, smallCfg.height/2.0, smallCfg.depth/2.0)
