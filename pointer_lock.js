@@ -52,6 +52,13 @@ var PointerLockControls = function ( camera, cannonBody ) {
           }
           if(endPoint.position.distanceTo(sphereBody.position) < 10){
             gameOver = true;
+            var end = document.getElementById("endGames");
+            var para = document.createElement("P"); 
+            var t = document.createTextNode("This is a paragraph.");
+            para.appendChild(t); 
+            end.appendChild(para);  
+            end.style.display = 'block';
+
           }
         }
     });

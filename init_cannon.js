@@ -50,6 +50,10 @@ function initCannon(){
     sphereBody.addShape(sphereShape);
     sphereBody.friction = 1;
     sphereBody.position.set(10,10,0);
+    // sphereBody.position.set(0,10,630);
+    // x: 0
+    // y: 5
+    // z: 630
     sphereBody.linearDamping = 0.9;
     world.add(sphereBody);
 
