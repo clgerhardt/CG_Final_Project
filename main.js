@@ -31,6 +31,13 @@
     var instructions = document.getElementById( 'instructions' );
     var music = document.getElementById("music");
 
+    var fogColor;
+    var dy;
+    var score = 0;
+    var particleGeometry;
+    var clock;
+    
+
 
     var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
@@ -99,7 +106,7 @@
                 element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
 
                 element.requestFullscreen();
-
+                clock.start();
             } else {
 
                 element.requestPointerLock();
@@ -113,6 +120,33 @@
         instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
 
     }
+    function calculateColorRGB(height){
+        var rgbNumPercentage = (100 - ((height/10)*100))/100;
+        var rgbNum = 256 * rgbNumPercentage;
+        var color = new THREE.Color(rgbNum,0,0);
+        return color;
+    }
+    function moveParticle(){
+        for(var i = 0; i < particleGeometry.vertices.length; i++){
+            if( particleGeometry.vertices[i].y < 10){
+                particleGeometry.vertices[i].add(new THREE.Vector3(0,.1,0));
+            }
+            else{
+                particleGeometry.vertices[i].add(new THREE.Vector3(0,-10,0));
+            }
+        }
+    }
+
+    // calculate score as a function of time
+    function calculateScore(){
+        var time = clock.getElapsedTime();
+
+        var timescore = (Math.cos(1/time)*10);
+
+        score -= timescore;
+        //log(score);
+
+    }
 
     initCannon();
     init();
@@ -123,8 +157,11 @@
         createCamera();
         createMaze();
         createGround();
+        createParticles();
         addGunLocationToCamera();
         setUpRenderer();
+
+        clock = new THREE.Clock(false);
 
         window.addEventListener( 'resize', onWindowResize, false );
         //cannonDebugRenderer = new THREE.CannonDebugRenderer(scene, world);
@@ -147,7 +184,6 @@
         if(!gameOver){
 
         requestAnimationFrame( render );
-
 
         if(controls.enabled){
           if(Date.now() - timeSinceLastCall >= .167){
@@ -183,7 +219,13 @@
 
         controls.update( Date.now() - time );
 
+        // move particles
+        moveParticle(particleGeometry);
+        particleGeometry.verticesNeedUpdate = true;
         // cannonDebugRenderer.update()
+
+        calculateScore();
+        renderer.render( scene, camera );
 
         time = Date.now();
 
