@@ -2,7 +2,7 @@ function initCannon(){
     // Setup our world
 
     world = new CANNON.World()
-    world.gravity.set(0.0, -48.0, 0.0)
+    world.gravity.set(0.0, -47.2, 0.0)
     world.broadphase = new CANNON.SAPBroadphase(world)
     world.defaultContactMaterial.friction = 50;
     world.defaultContactMaterial.restitution = .1;

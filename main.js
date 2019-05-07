@@ -36,7 +36,7 @@
     var score = 0;
     var particleGeometry;
     var clock;
-    
+
 
 
     var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
@@ -153,7 +153,6 @@
     render();
 
     function init() {
-        initUI();
         createCamera();
         createMaze();
         createGround();
@@ -189,7 +188,7 @@
           if(Date.now() - timeSinceLastCall >= .167){
             world.step(dt);
             timeSinceLastCall = Date.now();
-          }
+
 
 
             // Update bullet_bodies
@@ -215,8 +214,8 @@
               x.play();
             }
 
+          }
         }
-
         controls.update( Date.now() - time );
 
         // move particles
@@ -224,12 +223,16 @@
         particleGeometry.verticesNeedUpdate = true;
         // cannonDebugRenderer.update()
 
-        calculateScore();
+
         renderer.render( scene, camera );
 
         time = Date.now();
 
           renderer.render( scene, camera );
         }
-
+      else{
+        clock.stop();
+        calculateScore();
+        document.getElementById("score").textContent= score;
+      }
     }
