@@ -1,8 +1,8 @@
 var PointerLockControls = function ( camera, cannonBody ) {
 
     var eyeYPos = 2; // eyes are 2 meters above the ground
-    var velocityFactor = 0.2;
-    var jumpVelocity = 20;
+    var velocityFactor = 0.16;
+    var jumpVelocity = 18;
     var scope = this;
 
     var pitchObject = new THREE.Object3D();
@@ -38,7 +38,7 @@ var PointerLockControls = function ( camera, cannonBody ) {
             canJump = true;
 
         for(var j = 0; j < checkPointMesh.length; j++){
-          if(checkPointMesh[j].position.distanceTo(sphereBody.position)<11){
+          if(checkPointMesh[j].position.distanceTo(sphereBody.position)<10){
 
             console.log(checkPointMesh[j].position);
             respawnPosition.x = checkPointMesh[j].position.x;
@@ -49,6 +49,9 @@ var PointerLockControls = function ( camera, cannonBody ) {
             checkPointMesh.splice(j, 1);
             var x = document.getElementById("check");
             x.play();
+          }
+          if(endPoint.position.distanceTo(sphereBody.position) < 10){
+            gameOver = true;
           }
         }
     });
