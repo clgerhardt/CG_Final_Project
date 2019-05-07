@@ -284,6 +284,7 @@ function createMaze(){
           scene.add(cube);
           walls.push(cube)
           endPoint = cube;
+          console.log(cube.position);
         }
       }
     }
@@ -408,16 +409,16 @@ function createMaze(){
 
     }
 
-    for(var i = 0; i < walls.length; i++){
-        // Catch collide events
-        walls_bodies[i].addEventListener('collide', function(info) {
-            log('collide event')
-        })
-        // Catch endContact events
-        walls_bodies[i].addEventListener('endContact', function(info) {
-            log('endContact event')
-        })
-    }
+    // for(var i = 0; i < walls.length; i++){
+    //     // Catch collide events
+    //     walls_bodies[i].addEventListener('collide', function(info) {
+    //         log('collide event')
+    //     })
+    //     // Catch endContact events
+    //     walls_bodies[i].addEventListener('endContact', function(info) {
+    //         log('endContact event')
+    //     })
+    // }
 
   }
   // for(var i = 0; i < 2; i++){
